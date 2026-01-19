@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Arch Linux</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="app-wrapper">
+        
+        <!-- CARDS DE CIMA -->
+        <div class="top-row">
+
+            <!-- 1. Sistema -->
+            <div class="card" id="card-system">
+                <h2>Sistema</h2>
+                <div class="neofetch-layout">
+                    <div class="ascii-art">{{ ascii_logo }}</div>
+                    <div class="system-data">
+                        <div class="user-host">{{ user_host }}</div>
+                        {% for item in system_info %}
+                        <div class="info-row">
+                            <span class="info-label">{{ item.label }}:</span>
+                            <span class="info-val">{{ item.value }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Controles -->
+            <div class="card" id="card-controls">
+                <h2>Controles ESP8266</h2>
+                <div class="controls-content">
+                    <div class="control-group">
+                        <label>Estado</label>
+                        <div>
+                            <button id="btn-on" onclick="sendCommand({state: 'on'})">LIGAR</button>
+                            <button id="btn-off" onclick="sendCommand({state: 'off'})">DESLIGAR</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Cor RGB</label>
+                        <input type="color" id="color" value="#ffffff">
+                    </div>
+
+                    <div class="control-group">
+                        <label>Brilho: <span id="brightness-value">50</span>%</label>
+                        <input type="range" id="brightness" min="0" max="100" value="50">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Predefinições</label>
+                        <div style="display: flex;">
+                            <button onclick="updateColor('#ff0000')" style="background: #e78284; flex:1;">R</button>
+                            <button onclick="updateColor('#00ff00')" style="background: #a6e3a1; flex:1; color:#1e1e2e">G</button>
+                            <button onclick="updateColor('#0000ff')" style="background: #89b4fa; flex:1;">B</button>
+                            <button onclick="updateColor('#ffffff')" style="background: #cdd6f4; flex:1; color:#1e1e2e">W</button>
+                        </div>
+                    </div>
+
+                    <div class="todo-footer">
+                        A fazer (em construção)...
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Câmera -->
+            <div class="card" id="card-camera">
+                <h2>Câmera</h2>
+                <div class="camera-container">
+                    <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Carregando...">
+                </div>
+            </div>
+
+        </div> 
+
+        <!-- CARDS DE BAIXO -->
+        <div class="bottom-row">
+            <!-- Logs -->
+            <div class="card" id="card-logs" style="height: 100%;">
+                <div class="log-header">
+                    <h2>Terminal / Logs</h2>
+                    <div id="user-counter">Usuários online: <span id="user-count-val">0</span></div>
+                    <button id="clear-log-btn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">Limpar</button>
+                </div>
+                <div id="log-output" class="log-card-content">Iniciando sistema...<br></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
